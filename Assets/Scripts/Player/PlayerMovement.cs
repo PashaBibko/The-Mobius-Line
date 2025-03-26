@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -163,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
         !(
             Mathf.Abs(vel.x) < m_SlideRequiredSpeed &&
             Mathf.Abs(vel.z) < m_SlideRequiredSpeed
-        );
+        ) || true;
 
         // Checks wether the key state is valid for starting a slide
         if (m_SlidingKeyPressed == true && m_Sliding == false)
@@ -186,14 +185,16 @@ public class PlayerMovement : MonoBehaviour
             StopSlide();
         }
 
-        // Applies a downward force during the player slide
-        if (m_Sliding)
+        // Correctly applies force on slopes
+        if (m_Sliding && m_OnSlope)
         {
-            m_Body.AddForce(Vector3.down * m_Body.mass * 5.0f, ForceMode.Force);
+            Vector3 slopeDir = m_SlopeHit.normal;
+            slopeDir.y = 0.0f - slopeDir.y;
+            m_Body.AddForce(slopeDir.normalized * m_SlideSpeed * m_Body.mass * 10, ForceMode.Force);
         }
 
         // If at the start of a slide provides a boost to the player or if the player is on a slope
-        if (m_TicksOfSlideBoostLeft != 0 || (m_OnSlope && m_Sliding))
+        else if (m_TicksOfSlideBoostLeft != 0)
         {
             m_Body.AddForce(m_MoveDir.normalized * m_SlideSpeed * m_Body.mass * 10, ForceMode.Force);
         }
