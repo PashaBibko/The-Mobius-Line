@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# UNT0024: Give priority to scalar calculations over vector calculations
+dotnet_diagnostic.UNT0024.severity = none
