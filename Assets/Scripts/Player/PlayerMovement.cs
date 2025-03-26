@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("KeyBinds")]
     [SerializeField] KeyCode m_JumpKey;
+    [SerializeField] KeyCode m_SlideKey;
 
     [Header("References")]
     [SerializeField] Rigidbody m_Body;
@@ -27,10 +28,12 @@ public class PlayerMovement : MonoBehaviour
     //
     Vector3 m_MoveDir;
 
-    // Is the player on the ground
+    // Player state tracker
     bool m_Grounded;
+    bool m_Sliding;
 
     bool m_JumpKeyPressed;
+    bool m_SlidingKeyPressed;
 
     // Start is called before the first frame update
     private void Start()
@@ -48,6 +51,9 @@ public class PlayerMovement : MonoBehaviour
 
         // Checks wether the jump button has been pressed
         m_JumpKeyPressed = Input.GetKey(m_JumpKey);
+
+        // Checks wehter the slide key is being pressed
+        m_SlidingKeyPressed = Input.GetKey(m_SlideKey);
     }
 
     // Applies drag to the player
@@ -96,6 +102,34 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // Handles the logic for starting to slide
+    private void StartSlide()
+    { }
+
+    // Handles the logic for ending the slide
+    private void StopSlide()
+    { }
+
+    // Function to manage the sliding of the player
+    private void UpdateSlidingState()
+    {
+        // Checks wether the key state is valid for starting a slide
+        if (m_SlidingKeyPressed == true  && m_Sliding == false)
+        {
+            m_Sliding = true; // Updates the sliding state
+            
+            StartSlide();
+        }
+
+        // Checks wether the key state is valid for starting a slide
+        else if (m_SlidingKeyPressed == false && m_Sliding == true)
+        {
+            m_Sliding = false; // Updates the sliding state
+
+            StopSlide();
+        }
+    }
+
     // Function to make the player jump
     // The function checks wether the player is grounded so external checks are not needed
     private void Jump(bool force = false)
@@ -112,6 +146,9 @@ public class PlayerMovement : MonoBehaviour
     // Fixed Update is called once per physics update
     private void FixedUpdate()
     {
+        // Updates the player sliding state
+        UpdateSlidingState();
+
         // Updates the position of the player
         UpdatePlayerPosition();
     }
