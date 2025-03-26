@@ -34,10 +34,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Debug Settings")]
     [SerializeField] Text m_SpeedDisplay;
 
-    //
+    // Current direction the user has inputted
     Vector2 m_Input;
 
-    //
+    // The direction to move the player
     Vector3 m_MoveDir;
 
     // Player state tracker
