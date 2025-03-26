@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("General Settings")]
     [SerializeField] float m_MoveSpeed;
     [SerializeField] float m_GroundDrag;
+    [SerializeField] float m_AirDrag;
 
     [Header("Ground Check")]
     [SerializeField] float m_PlayerHeight;
@@ -58,10 +59,10 @@ public class PlayerMovement : MonoBehaviour
             m_Body.drag = m_GroundDrag;
         }
 
-        // Else there is no drag on the player
+        // Else it applies the air drag to the player
         else
         {
-            m_Body.drag = 0;
+            m_Body.drag = m_AirDrag;
         }
     }
 
