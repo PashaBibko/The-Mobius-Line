@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -10,6 +12,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] float m_PlayerHeight;
     [SerializeField] LayerMask m_GroundMask;
+    [SerializeField] LayerMask m_SlopeMask;
+
+    [Header("Sliding Settings")]
+    [SerializeField] float m_SlideRequiredSpeed;
+    [SerializeField] float m_SlideScaler;
+    [SerializeField] float m_SlideDrag;
+    [SerializeField] float m_SlideSpeed;
 
     [Header("Jump Settings")]
     [SerializeField] float m_JumpForce;
@@ -21,6 +30,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("References")]
     [SerializeField] Rigidbody m_Body;
     [SerializeField] Transform m_Orientation;
+    [SerializeField] Transform m_PlayerTransform;
+
+    [Header("Debug Settings")]
+    [SerializeField] Text m_SpeedDisplay;
 
     //
     Vector2 m_Input;
@@ -29,11 +42,16 @@ public class PlayerMovement : MonoBehaviour
     Vector3 m_MoveDir;
 
     // Player state tracker
-    bool m_Grounded;
-    bool m_Sliding;
+    bool m_Grounded = false;
+    bool m_OnSlope = false;
+    bool m_Sliding = false;
 
-    bool m_JumpKeyPressed;
-    bool m_SlidingKeyPressed;
+    bool m_JumpKeyPressed = false;
+    bool m_SlidingKeyPressed = false;
+
+    int m_TicksOfSlideBoostLeft = 0;
+
+    RaycastHit m_SlopeHit;
 
     // Start is called before the first frame update
     private void Start()
@@ -65,6 +83,12 @@ public class PlayerMovement : MonoBehaviour
             m_Body.drag = m_GroundDrag;
         }
 
+        // Applies sliding drag if sliding <- Very useful comment
+        if (m_Sliding)
+        {
+            m_Body.drag = m_SlideDrag;
+        }
+
         // Else it applies the air drag to the player
         else
         {
@@ -75,24 +99,29 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        // Updates wether the player is touching the ground or not
-        m_Grounded = Physics.Raycast(transform.position, Vector3.down, m_PlayerHeight * 0.5f + 0.2f, m_GroundMask);
+        // Performs raycasts to see what the player is standing on
+        m_Grounded = Physics.Raycast(transform.position, Vector3.down, m_PlayerHeight * 0.5f + 0.3f, m_GroundMask);
+        m_OnSlope = Physics.Raycast(transform.position, Vector3.down, out m_SlopeHit, m_PlayerHeight * 0.5f + 0.3f, m_SlopeMask);
 
         // Updates the state of the user input
         UpdateInput();
 
         // Applies drag to the player
         ApplyDrag();
+
+        // Displays the speed of the player to the screen
+        m_SpeedDisplay.text = "Speed: " + m_Body.velocity.magnitude.ToString("0.00");
     }
 
     // Updates basic movement and player jumping
     private void UpdatePlayerPosition()
     {
-        // Calculates the movement direction
-        m_MoveDir = (m_Orientation.forward * m_Input.y) + (m_Orientation.right * m_Input.x);
-
-        // Adds the force to the rigid body
-        m_Body.AddForce(m_MoveDir.normalized * m_MoveSpeed * 10.0f, ForceMode.Force);
+        // Sliding has its own movement code so the force being applied here is not needed
+        if (m_Sliding == false)
+        {
+            // Adds the force to the rigid body
+            m_Body.AddForce(m_MoveDir.normalized * m_MoveSpeed * m_Body.mass * 10.0f, ForceMode.Force);
+        }
 
         // Jumps if the jump key has been pressed
         if (m_JumpKeyPressed)
@@ -104,29 +133,69 @@ public class PlayerMovement : MonoBehaviour
 
     // Handles the logic for starting to slide
     private void StartSlide()
-    { }
+    {
+        // Shrinks the player to give appearance of sliding
+        m_PlayerTransform.localScale = new Vector3(1.0f, m_SlideScaler, 1.0f);
+
+        // Applies a downward force as shrinking the player scale causes them to float
+        m_Body.AddForce(Vector3.down * m_Body.mass * 5.0f, ForceMode.Impulse);
+
+        // Applies a boost of a force at the beginning of a slide
+        m_TicksOfSlideBoostLeft = 10;
+    }
 
     // Handles the logic for ending the slide
     private void StopSlide()
-    { }
+    {
+        // Grows the player back to normal scale
+        m_PlayerTransform.localScale = Vector3.one;
+
+        // Removes any of the slide boost that may be left
+        m_TicksOfSlideBoostLeft = 0;
+    }
 
     // Function to manage the sliding of the player
     private void UpdateSlidingState()
     {
-        // Checks wether the key state is valid for starting a slide
-        if (m_SlidingKeyPressed == true  && m_Sliding == false)
-        {
-            m_Sliding = true; // Updates the sliding state
-            
-            StartSlide();
-        }
+        // Works out wether the player's velocity is high enough to slide
+        Vector3 vel = m_Body.velocity;
+        bool canSlide =
+        !(
+            Mathf.Abs(vel.x) < m_SlideRequiredSpeed &&
+            Mathf.Abs(vel.z) < m_SlideRequiredSpeed
+        );
 
         // Checks wether the key state is valid for starting a slide
-        else if (m_SlidingKeyPressed == false && m_Sliding == true)
+        if (m_SlidingKeyPressed == true && m_Sliding == false)
+        {
+            // Checks player is moving in a direction
+            if (canSlide)
+            {
+                m_Sliding = true; // Updates the sliding state
+
+                StartSlide();
+            }
+        }
+
+        // Checks wether the player has stopped a slide or
+        // the player sliding if they are moving too slow
+        else if ((m_SlidingKeyPressed == false && m_Sliding == true) || (canSlide == false && m_Sliding == true))
         {
             m_Sliding = false; // Updates the sliding state
 
             StopSlide();
+        }
+
+        // Applies a downward force during the player slide
+        if (m_Sliding)
+        {
+            m_Body.AddForce(Vector3.down * m_Body.mass * 5.0f, ForceMode.Force);
+        }
+
+        // If at the start of a slide provides a boost to the player or if the player is on a slope
+        if (m_TicksOfSlideBoostLeft != 0 || (m_OnSlope && m_Sliding))
+        {
+            m_Body.AddForce(m_MoveDir.normalized * m_SlideSpeed * m_Body.mass * 10, ForceMode.Force);
         }
     }
 
@@ -139,17 +208,43 @@ public class PlayerMovement : MonoBehaviour
         if (m_Grounded || force)
         {
             // Applies an upwards force simulating a jump
-            m_Body.AddForce(transform.up * m_JumpForce, ForceMode.Impulse);
+            m_Body.AddForce(transform.up * m_JumpForce * m_Body.mass, ForceMode.Impulse);
         }
     }
 
     // Fixed Update is called once per physics update
     private void FixedUpdate()
     {
+        // Calculates the movement direction
+        m_MoveDir = (m_Orientation.forward * m_Input.y) + (m_Orientation.right * m_Input.x);
+
+        // Does additional calculations on the movement direction if on a slope
+        if (m_OnSlope)
+        {
+            m_MoveDir = Vector3.ProjectOnPlane(m_MoveDir, m_SlopeHit.normal).normalized;
+
+            m_Body.useGravity = false; // Disables gravity on slopes
+        }
+
+        else
+        {
+            m_Body.useGravity = true; // Renables gravity to stop errors
+        }
+
         // Updates the player sliding state
         UpdateSlidingState();
 
         // Updates the position of the player
         UpdatePlayerPosition();
+
+        // Updates the counter for slide boost updates left
+        m_TicksOfSlideBoostLeft = (int)Mathf.Clamp(m_TicksOfSlideBoostLeft - 1, 0, Mathf.Infinity);
+
+        // Remvoes tiny ammounts of velocity because it was annoying me
+        Vector3 v = m_Body.velocity;
+        if (Mathf.Abs(v.x) < 0.1f) { v.x = 0.0f; }
+        if (Mathf.Abs(v.y) < 0.1f) { v.y = 0.0f; }
+        if (Mathf.Abs(v.z) < 0.1f) { v.z = 0.0f; }
+        m_Body.velocity = v;
     }
 }
