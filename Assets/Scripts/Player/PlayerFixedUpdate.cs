@@ -79,6 +79,10 @@ public partial class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(v.z) < 0.1f) { v.z = 0.0f; }
         m_Body.velocity = v;
 
+        // Doubles gravity if falling to feel less floaty
+        if (v.y < 0.0f) { GravityController.Instance().SetScale(2.0f); }
+        else { GravityController.Instance().SetScale(1.0f); }
+
         // Clears all stored collisions
         m_WallCollisions.Clear();
     }
