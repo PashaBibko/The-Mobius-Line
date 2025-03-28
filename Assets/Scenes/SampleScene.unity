@@ -615,6 +615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4c295274f6a0645b04723c79481e73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_State: 0
   m_MoveSpeed: 7
   m_GroundDrag: 5
   m_AirDrag: 4
@@ -629,7 +630,10 @@ MonoBehaviour:
   m_SlideScaler: 0.6
   m_SlideDrag: 3
   m_SlideSpeed: 10
-  m_JumpForce: 10
+  m_JumpForce: 20
+  m_WallRunSpeed: 10
+  m_WallCheckDistance: 1.5
+  m_DistanceOfFloorToWallRide: 0.1
   m_JumpKey: 32
   m_SlideKey: 99
   m_Body: {fileID: 1174770952}
