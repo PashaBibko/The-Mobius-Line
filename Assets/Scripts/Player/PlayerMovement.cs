@@ -30,6 +30,7 @@ public partial class PlayerMovement : MonoBehaviour
     [SerializeField] float m_WallRunSpeed;
     [SerializeField] float m_WallCheckDistance;
     [SerializeField] float m_DistanceOfFloorToWallRide;
+    [SerializeField] float m_WallRideDrag;
 
     [Header("KeyBinds")]
     [SerializeField] KeyCode m_JumpKey;
@@ -68,6 +69,7 @@ public partial class PlayerMovement : MonoBehaviour
     // Wall riding trackers
     bool m_FirstFrameWallRiding = true;
     bool m_FlippedWallRideDirectionFirstFrame = false;
+    Vector3 m_LastWallNormal;
 
     // Raycast hit objects
     RaycastHit m_GroundHit;
@@ -91,6 +93,7 @@ public partial class PlayerMovement : MonoBehaviour
         // Creates the wall collider
         m_WallCollider = gameObject.AddComponent<BoxCollider>();
         m_WallCollider.size = new Vector3(m_WallCheckDistance * 2, 0.2f, m_WallCheckDistance * 2);
+        m_WallCollider.center = new Vector3(0.0f, 0.5f, 0.5f);
         m_WallCollider.providesContacts = true;
         m_WallCollider.isTrigger = true;
 

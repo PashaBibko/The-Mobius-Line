@@ -18,13 +18,13 @@ public partial class PlayerMovement : MonoBehaviour
         Vector3 vel = m_Body.velocity;
         bool canSlide = !(Mathf.Abs(vel.x) < m_SlideRequiredSpeed && Mathf.Abs(vel.z) < m_SlideRequiredSpeed);
 
-        // Checks if the player is in the wall running state
-        if (GetNormalOfClosestCollider(out m_WallNormal) && m_WallRunKeyPressed)
-            { m_State = PlayerState.WALL_RUNNING; }
-
         // Checks if the player is in the wall riding state
-        else if (m_SlidingKeyPressed && (canSlide || m_OnSlope) && m_Grounded)
+        if (m_SlidingKeyPressed && (canSlide || m_OnSlope) && m_Grounded)
             { m_State = PlayerState.SLIDING; }
+
+        // Checks if the player is in the wall running state
+        else if (GetNormalOfClosestCollider(out m_WallNormal) && m_WallRunKeyPressed)
+            { m_State = PlayerState.WALL_RUNNING; }
 
         // Defaults to ruuning
         else { m_State = PlayerState.RUNNING; }

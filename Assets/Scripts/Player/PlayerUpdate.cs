@@ -24,6 +24,10 @@ public partial class PlayerMovement : MonoBehaviour
                 m_Body.drag = m_SlideDrag;
                 break;
 
+            case PlayerState.WALL_RUNNING:
+                m_Body.drag = m_WallRideDrag;
+                break;
+
             default:
                 // Applies different drag depending on if the player is on the ground or not
                 if (m_Grounded)

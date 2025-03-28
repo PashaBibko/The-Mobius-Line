@@ -4,8 +4,6 @@ public partial class PlayerMovement : MonoBehaviour
 {
     bool GetNormalOfClosestCollider(out Vector3 normal)
     {
-        Debug.Log(m_WallCollisions.Count);
-
         float dist = Mathf.Infinity;
         Collider closest = null;
 
@@ -53,7 +51,7 @@ public partial class PlayerMovement : MonoBehaviour
         // Calculates the foward direction of the wall
         Vector3 foward = Vector3.Cross(m_WallNormal, transform.up);
 
-        if (m_FirstFrameWallRiding == true)
+        if (m_FirstFrameWallRiding == true || m_LastWallNormal != m_WallNormal)
         {
             // Resets the tracker
             m_FirstFrameWallRiding = false;
@@ -74,5 +72,8 @@ public partial class PlayerMovement : MonoBehaviour
 
         // Removes any vertical velocity the player may have
         m_Body.velocity = new Vector3(m_Body.velocity.x, 0.0f, m_Body.velocity.z);
+
+        // Sets the last wall normal to the current normal for later use
+        m_LastWallNormal = m_WallNormal;
     }
 }
