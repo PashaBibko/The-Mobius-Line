@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,6 +34,7 @@ public partial class PlayerMovement : MonoBehaviour
     [Header("KeyBinds")]
     [SerializeField] KeyCode m_JumpKey;
     [SerializeField] KeyCode m_SlideKey;
+    [SerializeField] KeyCode m_WallRunKey;
 
     [Header("References")]
     [SerializeField] Rigidbody m_Body;
@@ -48,6 +50,7 @@ public partial class PlayerMovement : MonoBehaviour
     // Key state trackers
     bool m_JumpKeyPressed = false;
     bool m_SlidingKeyPressed = false;
+    bool m_WallRunKeyPressed = false;
 
     // The direction to move the player
     Vector3 m_MoveDir;
@@ -55,10 +58,6 @@ public partial class PlayerMovement : MonoBehaviour
     // Player state trackers
     bool m_Grounded = false;
     bool m_OnSlope = false;
-
-    // Trackers for the walls
-    bool m_HitLhsWall = false;
-    bool m_HitRhsWall = false;
 
     // Tracks if the distance of the ground is big enough
     bool m_IsFarEnoughOffGroundToWallRide = false;
@@ -69,13 +68,29 @@ public partial class PlayerMovement : MonoBehaviour
     // Raycast hit objects
     RaycastHit m_GroundHit;
     RaycastHit m_SlopeHit;
-    RaycastHit m_LhsWall;
-    RaycastHit m_RhsWall;
+
+    //
+    BoxCollider m_WallCollider;
+
+    //
+    List<Collider> m_WallCollisions;
+
+    //
+    Vector3 m_WallNormal;
 
     // Start is called before the first frame update
     private void Start()
     {
         // Stops the rigidbody from rotatating when we don't want it to
         m_Body.freezeRotation = true;
+
+        // Creates the wall collider
+        m_WallCollider = gameObject.AddComponent<BoxCollider>();
+        m_WallCollider.size = new Vector3(m_WallCheckDistance * 2, 0.2f, m_WallCheckDistance * 2);
+        m_WallCollider.providesContacts = true;
+        m_WallCollider.isTrigger = true;
+
+        // Allocates memory for the list of collisions
+        m_WallCollisions = new List<Collider>();
     }
 }

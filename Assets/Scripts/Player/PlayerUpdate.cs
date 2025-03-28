@@ -9,11 +9,10 @@ public partial class PlayerMovement : MonoBehaviour
         m_Input.x = Input.GetAxisRaw("Horizontal");
         m_Input.y = Input.GetAxisRaw("Vertical");
 
-        // Checks wether the jump button has been pressed
+        // Updates key press states
         m_JumpKeyPressed = Input.GetKey(m_JumpKey);
-
-        // Checks wehter the slide key is being pressed
         m_SlidingKeyPressed = Input.GetKey(m_SlideKey);
+        m_WallRunKeyPressed = Input.GetKey(m_WallRunKey);
     }
 
     // Applies drag to the player
@@ -42,10 +41,6 @@ public partial class PlayerMovement : MonoBehaviour
         // Performs raycasts to see what the player is standing on
         m_Grounded = Physics.Raycast(transform.position, Vector3.down, out m_GroundHit, m_PlayerHeight * 0.5f + 0.3f, m_GroundMask);
         m_OnSlope = Physics.Raycast(transform.position, Vector3.down, out m_SlopeHit, m_PlayerHeight * 0.5f + 0.3f, m_SlopeMask);
-
-        // Checks for walls either side of the player
-        m_HitLhsWall = Physics.Raycast(transform.position, m_Orientation.right, out m_LhsWall, m_WallCheckDistance, m_GroundMask);
-        m_HitRhsWall = Physics.Raycast(transform.position, -m_Orientation.right, out m_RhsWall, m_WallCheckDistance, m_GroundMask);
 
         // Checks the player is far enough of the ground to start wall running
         m_IsFarEnoughOffGroundToWallRide = m_GroundHit.distance > m_DistanceOfFloorToWallRide;

@@ -78,5 +78,8 @@ public partial class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(v.y) < 0.1f) { v.y = 0.0f; }
         if (Mathf.Abs(v.z) < 0.1f) { v.z = 0.0f; }
         m_Body.velocity = v;
+
+        // Clears all stored collisions
+        m_WallCollisions.Clear();
     }
 }

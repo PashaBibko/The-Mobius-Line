@@ -19,7 +19,7 @@ public partial class PlayerMovement : MonoBehaviour
         bool canSlide = !(Mathf.Abs(vel.x) < m_SlideRequiredSpeed && Mathf.Abs(vel.z) < m_SlideRequiredSpeed);
 
         // Checks if the player is in the wall running state
-        if (m_HitLhsWall || m_HitRhsWall)
+        if (GetNormalOfClosestCollider(out m_WallNormal) && m_WallRunKeyPressed)
             { m_State = PlayerState.WALL_RUNNING; }
 
         // Checks if the player is in the wall riding state
