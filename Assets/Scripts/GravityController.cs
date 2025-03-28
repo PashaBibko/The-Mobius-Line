@@ -6,7 +6,7 @@ public class GravityController
     static GravityController s_Instance = null;
 
     // Constant gravity scale
-    const float m_GravityScale = 20.0f;
+    const float m_GravityScale = -20.0f;
 
     // Private constructor to stop accidental creation
     private GravityController()
