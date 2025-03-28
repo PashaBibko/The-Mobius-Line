@@ -631,11 +631,12 @@ MonoBehaviour:
   m_SlideDrag: 3
   m_SlideSpeed: 10
   m_JumpForce: 20
-  m_WallRunSpeed: 10
+  m_WallRunSpeed: 15
   m_WallCheckDistance: 1.5
   m_DistanceOfFloorToWallRide: 0.1
   m_JumpKey: 32
   m_SlideKey: 99
+  m_WallRunKey: 304
   m_Body: {fileID: 1174770952}
   m_Orientation: {fileID: 166780449}
   m_PlayerTransform: {fileID: 1174770951}

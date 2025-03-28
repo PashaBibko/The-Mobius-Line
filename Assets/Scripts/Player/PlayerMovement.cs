@@ -65,6 +65,10 @@ public partial class PlayerMovement : MonoBehaviour
     // Timer for slide boost duration left
     int m_TicksOfSlideBoostLeft = 0;
 
+    // Wall riding trackers
+    bool m_FirstFrameWallRiding = true;
+    bool m_FlippedWallRideDirectionFirstFrame = false;
+
     // Raycast hit objects
     RaycastHit m_GroundHit;
     RaycastHit m_SlopeHit;

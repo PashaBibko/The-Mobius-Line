@@ -40,6 +40,10 @@ public partial class PlayerMovement : MonoBehaviour
                 StopSlide();
                 break;
 
+            case PlayerState.WALL_RUNNING:
+                m_FirstFrameWallRiding = true;
+                break;
+
             default:
                 break;
         }
