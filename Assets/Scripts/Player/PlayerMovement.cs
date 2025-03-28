@@ -194,14 +194,14 @@ public class PlayerMovement : MonoBehaviour
         Vector3 foward = Vector3.Cross(normal, transform.up);
 
         // Flips the foward direction if facing the other direction
-        if ((m_Orientation.forward - foward).magnitude > (m_Orientation.forward - -foward).magnitude)
+        if ((m_Orientation.forward - foward).magnitude > (m_Orientation.forward - (-foward)).magnitude)
             { foward = -foward; }
 
         // Applies the wall running force to the player
         m_Body.AddForce(foward * m_WallRunSpeed * m_Body.mass * 10.0f, ForceMode.Force);
 
         // Removes any vertical velocity the player may have
-        //m_Body.velocity = new Vector3(m_Body.velocity.x, 0.0f, m_Body.velocity.z);
+        m_Body.velocity = new Vector3(m_Body.velocity.x, 0.0f, m_Body.velocity.z);
     }
 
     // Function to make the player jump
@@ -224,11 +224,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Works out wether the player's velocity is high enough to slide
         Vector3 vel = m_Body.velocity;
-        bool canSlide =
-        !(
-            Mathf.Abs(vel.x) < m_SlideRequiredSpeed &&
-            Mathf.Abs(vel.z) < m_SlideRequiredSpeed
-        );
+        bool canSlide = !(Mathf.Abs(vel.x) < m_SlideRequiredSpeed && Mathf.Abs(vel.z) < m_SlideRequiredSpeed);
 
         // Checks if the player is in the wall running state
         if (m_HitLhsWall || m_HitRhsWall)
