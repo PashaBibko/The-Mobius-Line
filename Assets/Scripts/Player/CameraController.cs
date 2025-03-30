@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Transform m_Orientation;
+    [SerializeField] Transform m_Tracking;
 
     // Private variables //
 
@@ -65,5 +66,8 @@ public class CameraController : MonoBehaviour
         // Applies the rotation to the objects within Unity
         m_Orientation.rotation = Quaternion.Euler(0, m_Rotation.y, 0);
         transform.rotation = Quaternion.Euler(m_Rotation.x, m_Rotation.y, 0);
+
+        // Sets its location to where it is tracking
+        transform.position = m_Tracking.position;
     }
 }

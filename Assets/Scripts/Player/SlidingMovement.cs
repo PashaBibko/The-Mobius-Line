@@ -31,7 +31,7 @@ public partial class PlayerMovement : MonoBehaviour
         // Correctly applies force on slopes
         if (m_OnSlope)
         {
-            Vector3 slopeDir = m_SlopeHit.normal;
+            Vector3 slopeDir = m_StandingOn.normal;
             slopeDir.y = 0.0f - slopeDir.y;
             m_Body.AddForce(slopeDir.normalized * m_SlideSpeed * m_Body.mass * 10, ForceMode.Force);
         }

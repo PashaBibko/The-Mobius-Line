@@ -28,7 +28,7 @@ public partial class PlayerMovement : MonoBehaviour
         if (m_OnSlope)
         {
             // Calculates better move direction for sliding
-            m_MoveDir = Vector3.ProjectOnPlane(m_MoveDir, m_SlopeHit.normal).normalized;
+            m_MoveDir = Vector3.ProjectOnPlane(m_MoveDir, m_StandingOn.normal).normalized;
         }
 
         // Runs correct update function depending on player state

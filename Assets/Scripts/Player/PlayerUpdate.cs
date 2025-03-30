@@ -43,11 +43,13 @@ public partial class PlayerMovement : MonoBehaviour
     private void Update()
     {
         // Performs raycasts to see what the player is standing on
-        m_Grounded = Physics.Raycast(transform.position, Vector3.down, out m_GroundHit, m_PlayerHeight * 0.5f + 0.3f, m_GroundMask);
-        m_OnSlope = Physics.Raycast(transform.position, Vector3.down, out m_SlopeHit, m_PlayerHeight * 0.5f + 0.3f, m_SlopeMask);
+        m_Grounded = Physics.Raycast(transform.position, Vector3.down, out m_StandingOn, m_PlayerHeight * 0.5f + 0.3f, m_GroundMask);
+        m_OnSlope = m_StandingOn.normal != new Vector3(0.0f, 1.0f, 0.0f) && m_Grounded;
+
+        Debug.Log(m_OnSlope + " | " + m_StandingOn.normal);
 
         // Checks the player is far enough of the ground to start wall running
-        m_IsFarEnoughOffGroundToWallRide = m_GroundHit.distance > m_DistanceOfFloorToWallRide;
+        m_IsFarEnoughOffGroundToWallRide = m_StandingOn.distance > m_DistanceOfFloorToWallRide;
 
         // Updates the state of the user input
         UpdateInput();

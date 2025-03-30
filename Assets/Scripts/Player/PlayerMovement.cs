@@ -15,7 +15,6 @@ public partial class PlayerMovement : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] float m_PlayerHeight;
     [SerializeField] LayerMask m_GroundMask;
-    [SerializeField] LayerMask m_SlopeMask;
 
     [Header("Sliding Settings")]
     [SerializeField] float m_SlideRequiredSpeed;
@@ -71,9 +70,8 @@ public partial class PlayerMovement : MonoBehaviour
     bool m_FlippedWallRideDirectionFirstFrame = false;
     Vector3 m_LastWallNormal;
 
-    // Raycast hit objects
-    RaycastHit m_GroundHit;
-    RaycastHit m_SlopeHit;
+    // What the player is standing on
+    RaycastHit m_StandingOn;
 
     //
     BoxCollider m_WallCollider;
