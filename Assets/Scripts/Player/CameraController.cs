@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
     static CameraController s_Instance = null;
 
     // Provides a way for external objects to interact with the camera
-    public CameraController Instance() => s_Instance;
+    public static CameraController Instance() => s_Instance;
 
     // Start is called before the first frame update
     void Start()

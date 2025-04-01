@@ -46,8 +46,6 @@ public partial class PlayerMovement : MonoBehaviour
         m_Grounded = Physics.Raycast(transform.position, Vector3.down, out m_StandingOn, m_PlayerHeight * 0.5f + 0.3f, m_GroundMask);
         m_OnSlope = m_StandingOn.normal != new Vector3(0.0f, 1.0f, 0.0f) && m_Grounded;
 
-        Debug.Log(m_OnSlope + " | " + m_StandingOn.normal);
-
         // Checks the player is far enough of the ground to start wall running
         m_IsFarEnoughOffGroundToWallRide = m_StandingOn.distance > m_DistanceOfFloorToWallRide;
 
