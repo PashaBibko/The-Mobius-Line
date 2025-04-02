@@ -8,7 +8,7 @@ public class PortalCamera : MonoBehaviour
 
     // Private members //
 
-    public PortalManager m_DisplayPortal;
+    PortalManager m_DisplayPortal;
     PortalManager m_CapturePortal;
 
     RenderTexture m_RenderTexture;
@@ -16,9 +16,16 @@ public class PortalCamera : MonoBehaviour
 
     Camera m_Camera;
 
+    Vector3 m_Rot;
+
     // Initialistion function for the camera
-    public void InitCamera(MeshRenderer renderer, PortalManager creator)
+    public void InitCamera(MeshRenderer renderer, PortalManager creator, Vector3 rot)
     {
+        Debug.Log(rot);
+
+        //
+        m_Rot = rot;
+
         //
         m_CapturePortal = creator.Linked();
         m_DisplayPortal = creator;
@@ -50,10 +57,10 @@ public class PortalCamera : MonoBehaviour
         Transform t = m_CapturePortal.transform.parent;
         transform.parent.position = (t.position) + (-t.forward * offset.z) + (t.up * offset.y) + (-t.right * offset.x);
 
-        //
+        // Calculate angle stuff
         float angle = Quaternion.Angle(m_DisplayPortal.transform.parent.rotation, m_CapturePortal.transform.parent.rotation);
         Quaternion rotDif = Quaternion.AngleAxis(angle, Vector3.up);
         Vector3 newCamDir = rotDif * CameraController.Instance().transform.forward;
-        transform.parent.rotation = Quaternion.LookRotation(newCamDir, Vector3.up);
+        transform.parent.eulerAngles = Quaternion.LookRotation(newCamDir, Vector3.up).eulerAngles + m_Rot;
     }
 }

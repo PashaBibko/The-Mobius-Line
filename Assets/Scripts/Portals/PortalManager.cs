@@ -11,8 +11,6 @@ public class PortalManager : MonoBehaviour
 
     [Header("Points")]
     [SerializeField] Transform m_PlayerPoint;
-    [SerializeField] Transform m_Pos;
-    [SerializeField] Transform m_Rot;
 
     PortalManager m_OtherManager;
     PortalCamera m_PortalCamera;
@@ -36,7 +34,7 @@ public class PortalManager : MonoBehaviour
         m_PortalCamera = cam.GetComponentInChildren<PortalCamera>();
 
         // Initialises the camera so it renders to the portal and not the screen
-        m_PortalCamera.InitCamera(m_PortalRenderer, this);
+        m_PortalCamera.InitCamera(m_PortalRenderer, this, transform.parent.localEulerAngles * 2.0f);
     }
 
     // Updates is called every frame
