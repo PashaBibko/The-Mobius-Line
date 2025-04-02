@@ -49,5 +49,11 @@ public class PortalCamera : MonoBehaviour
         // Translates it to the capture portal and assigns it to the camera position
         Transform t = m_CapturePortal.transform.parent;
         transform.parent.position = (t.position) + (-t.forward * offset.z) + (t.up * offset.y) + (-t.right * offset.x);
+
+        //
+        float angle = Quaternion.Angle(m_DisplayPortal.transform.parent.rotation, m_CapturePortal.transform.parent.rotation);
+        Quaternion rotDif = Quaternion.AngleAxis(angle, Vector3.up);
+        Vector3 newCamDir = rotDif * CameraController.Instance().transform.forward;
+        transform.parent.rotation = Quaternion.LookRotation(newCamDir, Vector3.up);
     }
 }
