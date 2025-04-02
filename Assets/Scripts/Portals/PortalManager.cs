@@ -57,8 +57,10 @@ public class PortalManager : MonoBehaviour
             Vector3 difference = PlayerMovement.Pos() - transform.position;
             float dotProduct = Vector3.Dot(transform.up, difference);
 
+            Debug.Log(dotProduct + "\t" + difference);
+
             // If this is true the player has crossed the portal
-            if (dotProduct < 0f || true)
+            if (dotProduct < 0f)
             {
                 Debug.Log("Teleported player");
 
@@ -69,15 +71,10 @@ public class PortalManager : MonoBehaviour
 
                 // Teleports the player
                 Vector3 offset = Quaternion.Euler(0f, rotDif, 0f) * difference;
-                PlayerMovement.SetPos(m_OtherManager.transform.position + offset);
+                PlayerMovement.SetPos(m_OtherManager.transform.position + PlayerOffset() - new Vector3(0, 2, 0));
 
                 // Stops the overlapping as it has ended
                 m_PlayerOverlapping = false;
-            }
-
-            else
-            {
-                Debug.Log("Player was not teleported");
             }
         }
     }
