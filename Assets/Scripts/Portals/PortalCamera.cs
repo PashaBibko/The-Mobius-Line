@@ -43,9 +43,11 @@ public class PortalCamera : MonoBehaviour
     // Update is called every frame
     void Update()
     {
-        Vector3 offset = m_CapturePortal.PlayerOffset();
-        transform.parent.position = offset;
+        // Gets the offset of the player from the display portal
+        Vector3 offset = m_DisplayPortal.PlayerOffset();
 
-        transform.parent.position = m_CapturePortal.TranslateOffsetToSpace(m_DisplayPortal.PlayerOffset(), Vector3.zero);
+        // Translates it to the capture portal and assigns it to the camera position
+        Transform t = m_CapturePortal.transform.parent;
+        transform.parent.position = (t.position) + (-t.forward * offset.z) + (t.up * offset.y) + (-t.right * offset.x);
     }
 }

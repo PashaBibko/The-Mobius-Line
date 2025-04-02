@@ -18,13 +18,7 @@ public class PortalManager : MonoBehaviour
     PortalCamera m_PortalCamera;
 
     public PortalManager Linked() => m_OtherManager;
-
-    public Vector3 pos => transform.parent.position;
-    public Quaternion rot => transform.parent.rotation;
-
-    public void SetPos(Vector3 v) => transform.parent.position = v;
-
-    public Vector3 PlayerOffset() => m_PlayerPoint.position;
+    public Vector3 PlayerOffset() => m_PlayerPoint.localPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -49,13 +43,5 @@ public class PortalManager : MonoBehaviour
     void Update()
     {
         m_PlayerPoint.position = CameraController.Instance().transform.position;
-    }
-
-    public Vector3 TranslateOffsetToSpace(Vector3 pos, Vector3 euler)
-    {
-        m_Rot.localEulerAngles = euler;
-        m_Pos.localPosition = pos;
-
-        return m_Pos.position;
     }
 }

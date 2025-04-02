@@ -9,8 +9,7 @@ public class GravityController
     const float m_GravityScale = -20.0f;
 
     // Private constructor to stop accidental creation
-    private GravityController()
-    { }
+    private GravityController() { }
 
     public static GravityController Instance()
     {
