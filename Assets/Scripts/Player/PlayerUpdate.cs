@@ -56,6 +56,6 @@ public partial class PlayerMovement : MonoBehaviour
         ApplyDrag();
 
         // Displays the speed of the player to the screen
-        m_SpeedDisplay.text = "Speed: " + m_Body.velocity.magnitude.ToString("0.00");
+        m_SpeedDisplay.text = "Speed: " + new Vector3(m_Body.velocity.x, 0.0f, m_Body.velocity.z).magnitude.ToString("0.00") + " m/s";
     }
 }

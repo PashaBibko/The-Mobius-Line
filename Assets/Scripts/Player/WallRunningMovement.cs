@@ -74,5 +74,8 @@ public partial class PlayerMovement : MonoBehaviour
 
         // Sets the last wall normal to the current normal for later use
         m_LastWallNormal = m_WallNormal;
+
+        // Checks if the player wants to jump
+        if (m_JumpKeyPressed) { Jump(2.0f, true); }
     }
 }
