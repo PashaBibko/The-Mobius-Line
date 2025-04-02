@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using UnityEngine;
 
 public class PortalManager : MonoBehaviour
@@ -9,7 +8,11 @@ public class PortalManager : MonoBehaviour
     [Header("Set References")]
     [SerializeField] GameObject m_CameraPrefab;
     [SerializeField] MeshRenderer m_PortalRenderer;
-    [SerializeField] Transform m_CapturePoint;
+
+    [Header("Points")]
+    [SerializeField] Transform m_PlayerPoint;
+    [SerializeField] Transform m_Pos;
+    [SerializeField] Transform m_Rot;
 
     PortalManager m_OtherManager;
     PortalCamera m_PortalCamera;
@@ -18,6 +21,10 @@ public class PortalManager : MonoBehaviour
 
     public Vector3 pos => transform.parent.position;
     public Quaternion rot => transform.parent.rotation;
+
+    public void SetPos(Vector3 v) => transform.parent.position = v;
+
+    public Vector3 PlayerOffset() => m_PlayerPoint.position;
 
     // Start is called before the first frame update
     void Start()
@@ -37,9 +44,18 @@ public class PortalManager : MonoBehaviour
         // Initialises the camera so it renders to the portal and not the screen
         m_PortalCamera.InitCamera(m_PortalRenderer, this);
     }
-    public Vector3 TranslateOffset(Vector3 offset)
+
+    // Updates is called every frame
+    void Update()
     {
-        m_CapturePoint.localPosition = offset;
-        return m_CapturePoint.position;
+        m_PlayerPoint.position = CameraController.Instance().transform.position;
+    }
+
+    public Vector3 TranslateOffsetToSpace(Vector3 pos, Vector3 euler)
+    {
+        m_Rot.localEulerAngles = euler;
+        m_Pos.localPosition = pos;
+
+        return m_Pos.position;
     }
 }

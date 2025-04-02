@@ -8,7 +8,7 @@ public class PortalCamera : MonoBehaviour
 
     // Private members //
 
-    PortalManager m_DisplayPortal;
+    public PortalManager m_DisplayPortal;
     PortalManager m_CapturePortal;
 
     RenderTexture m_RenderTexture;
@@ -43,8 +43,9 @@ public class PortalCamera : MonoBehaviour
     // Update is called every frame
     void Update()
     {
-        // Calculates the player distance from where the portal will be rendererd
-        Vector3 offset = CameraController.Instance().transform.position - m_DisplayPortal.pos;
-        transform.parent.position = m_CapturePortal.TranslateOffset(offset);
+        Vector3 offset = m_CapturePortal.PlayerOffset();
+        transform.parent.position = offset;
+
+        transform.parent.position = m_CapturePortal.TranslateOffsetToSpace(m_DisplayPortal.PlayerOffset(), Vector3.zero);
     }
 }
