@@ -1,3 +1,4 @@
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class PortalManager : MonoBehaviour
@@ -12,10 +13,17 @@ public class PortalManager : MonoBehaviour
     [Header("Points")]
     [SerializeField] Transform m_PlayerPoint;
 
+    // Private variables //
+
     PortalManager m_OtherManager;
     PortalCamera m_PortalCamera;
 
+    bool m_PlayerOverlapping = false;
+
+    // Gets the other end of the portal
     public PortalManager Linked() => m_OtherManager;
+
+    // Gets the location of the player relative to the portal
     public Vector3 PlayerOffset() => m_PlayerPoint.localPosition;
 
     // Start is called before the first frame update
@@ -40,6 +48,54 @@ public class PortalManager : MonoBehaviour
     // Updates is called every frame
     void Update()
     {
+        // Updates the player position relative to the portal
         m_PlayerPoint.position = CameraController.Instance().transform.position;
+
+        // Checks if the player is overlapping with the portal
+        if (m_PlayerOverlapping)
+        {
+            Vector3 difference = PlayerMovement.Pos() - transform.position;
+            float dotProduct = Vector3.Dot(transform.up, difference);
+
+            // If this is true the player has crossed the portal
+            if (dotProduct < 0f || true)
+            {
+                Debug.Log("Teleported player");
+
+                // Rotates the player
+                float rotDif = -Quaternion.Angle(transform.rotation, m_OtherManager.transform.rotation);
+                rotDif += 180.0f;
+                PlayerMovement.Orientation().Rotate(Vector3.up, rotDif);
+
+                // Teleports the player
+                Vector3 offset = Quaternion.Euler(0f, rotDif, 0f) * difference;
+                PlayerMovement.SetPos(m_OtherManager.transform.position + offset);
+
+                // Stops the overlapping as it has ended
+                m_PlayerOverlapping = false;
+            }
+
+            else
+            {
+                Debug.Log("Player was not teleported");
+            }
+        }
+    }
+
+    // When something enters the portal
+    private void OnTriggerEnter(Collider other)
+    {
+        // Changing the state if it is not the player will causes issues
+        if (other.CompareTag(PlayerMovement.Object().tag) == false) { return; }
+        m_PlayerOverlapping = true;
+    }
+
+    // When something exits the portal
+    private void OnTriggerExit(Collider other)
+    {
+        // Changing the state if it is not the player will causes issues
+        if (other.CompareTag(PlayerMovement.Object().tag) == false) { return; }
+        m_PlayerOverlapping = false;
+        
     }
 }

@@ -21,12 +21,10 @@ public class PortalCamera : MonoBehaviour
     // Initialistion function for the camera
     public void InitCamera(MeshRenderer renderer, PortalManager creator, Vector3 rot)
     {
-        Debug.Log(rot);
-
-        //
+        // Transfers the passed rotation to be stored within the class
         m_Rot = rot;
 
-        //
+        // Stores both portals
         m_CapturePortal = creator.Linked();
         m_DisplayPortal = creator;
 

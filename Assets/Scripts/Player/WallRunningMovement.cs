@@ -31,8 +31,7 @@ public partial class PlayerMovement : MonoBehaviour
         Vector3 point = closest.ClosestPoint(transform.position);
         Vector3 dir = point - transform.position;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, dir.normalized, out hit, (m_WallCheckDistance * 2.0f) + 1.0f, m_GroundMask))
+        if (Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, (m_WallCheckDistance * 2.0f) + 1.0f, m_GroundMask))
         {
             normal = hit.normal;
             return true;
