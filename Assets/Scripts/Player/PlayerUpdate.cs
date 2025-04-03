@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public partial class PlayerMovement : MonoBehaviour
 {
@@ -56,6 +57,12 @@ public partial class PlayerMovement : MonoBehaviour
         ApplyDrag();
 
         // Displays the speed of the player to the screen
-        m_SpeedDisplay.text = "Speed: " + new Vector3(m_Body.velocity.x, 0.0f, m_Body.velocity.z).magnitude.ToString("0.00") + " m/s";
+        m_SpeedDisplay.text = new Vector3(m_Body.velocity.x, 0.0f, m_Body.velocity.z).magnitude.ToString("0.00") + " m/s";
+
+        // Reloads the game to stop falling off
+        if (Input.GetKey(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }

@@ -70,4 +70,7 @@ public class CameraController : MonoBehaviour
         // Sets its location to where it is tracking
         transform.position = m_Tracking.position;
     }
+
+    // Adds a way for external forces to modify the direction the player is looking
+    public void RotatePlayerDirection(Vector2 dif) => m_Rotation += dif;
 }

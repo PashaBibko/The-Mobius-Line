@@ -39,7 +39,6 @@ public partial class PlayerMovement : MonoBehaviour
 
         else
         {
-            Debug.LogError("SOMETHING WENT WRONG");
             normal = Vector3.zero;
             return false;
         }

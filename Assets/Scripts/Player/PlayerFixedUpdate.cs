@@ -22,6 +22,9 @@ public partial class PlayerMovement : MonoBehaviour
     // Fixed Update is called once per physics update
     private void FixedUpdate()
     {
+        // Resets portal state
+        m_PortalFrameCounter = Mathf.Max(0, m_PortalFrameCounter - 1);
+
         // Works out the new state of the player
         UpdatePlayerState();
 
@@ -81,10 +84,21 @@ public partial class PlayerMovement : MonoBehaviour
         m_Body.velocity = v;
 
         // Doubles gravity if falling to feel less floaty
-        if (v.y < 0.0f) { GravityController.Instance().SetScale(8.0f); }
-        else { GravityController.Instance().SetScale(3f); }
+        if (v.y < 0.0f) { GravityController.Instance().SetScale(2f); }
+        else { GravityController.Instance().SetScale(1f); }
 
         // Clears all stored collisions
         m_WallCollisions.Clear();
+    }
+
+    public void WentThroughPortal(float change)
+    {
+        // Resets the counter
+        m_PortalFrameCounter = 3;
+
+        // Rotates the velocity of the player
+        Vector3 vel = m_Body.velocity;
+        vel = Quaternion.AngleAxis(change, Vector3.up) * vel;
+        m_Body.velocity = vel;
     }
 }

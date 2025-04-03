@@ -36,7 +36,7 @@ public partial class PlayerMovement : MonoBehaviour
             m_Body.AddForce(slopeDir.normalized * m_SlideSpeed * m_Body.mass * 10, ForceMode.Force);
 
             // Checks if the player wants to jump
-            if (m_JumpKeyPressed) { Jump(5.0f, true); }
+            if (m_JumpKeyPressed) { Jump(2.0f, true); }
         }
 
         // If at the start of a slide provides a boost to the player or if the player is on a slope

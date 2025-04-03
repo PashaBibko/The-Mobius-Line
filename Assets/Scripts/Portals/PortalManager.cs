@@ -1,4 +1,3 @@
-using UnityEditor.UIElements;
 using UnityEngine;
 
 public class PortalManager : MonoBehaviour
@@ -54,24 +53,24 @@ public class PortalManager : MonoBehaviour
         // Checks if the player is overlapping with the portal
         if (m_PlayerOverlapping)
         {
+            // Calculates if the player is going towards the portal
             Vector3 difference = PlayerMovement.Pos() - transform.position;
-            float dotProduct = Vector3.Dot(transform.up, difference);
-
-            Debug.Log(dotProduct + "\t" + difference);
+            float dotProduct = Vector3.Dot(m_PortalRenderer.gameObject.transform.up, difference);
 
             // If this is true the player has crossed the portal
-            if (dotProduct < 0f)
+            if (dotProduct < 0f && PlayerMovement.CanGoThroughPortals())
             {
-                Debug.Log("Teleported player");
-
                 // Rotates the player
                 float rotDif = -Quaternion.Angle(transform.rotation, m_OtherManager.transform.rotation);
                 rotDif += 180.0f;
-                PlayerMovement.Orientation().Rotate(Vector3.up, rotDif);
+                CameraController.Instance().RotatePlayerDirection(new Vector2(0f, rotDif));
 
                 // Teleports the player
                 Vector3 offset = Quaternion.Euler(0f, rotDif, 0f) * difference;
                 PlayerMovement.SetPos(m_OtherManager.transform.position + PlayerOffset() - new Vector3(0, 2, 0));
+
+                // Tellss the player it went through a portal
+                PlayerMovement.Instance().WentThroughPortal(rotDif);
 
                 // Stops the overlapping as it has ended
                 m_PlayerOverlapping = false;
