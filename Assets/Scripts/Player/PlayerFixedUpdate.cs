@@ -25,6 +25,13 @@ public partial class PlayerMovement : MonoBehaviour
         // Resets portal state
         m_PortalFrameCounter = Mathf.Max(0, m_PortalFrameCounter - 1);
 
+        // Transfers all stored velocity to the player
+        if (m_StoredVel != Vector3.zero)
+        {
+            m_Body.velocity = m_StoredVel;
+            m_StoredVel = Vector3.zero;
+        }
+
         // Works out the new state of the player
         UpdatePlayerState();
 
@@ -94,11 +101,14 @@ public partial class PlayerMovement : MonoBehaviour
     public void WentThroughPortal(float change)
     {
         // Resets the counter
-        m_PortalFrameCounter = 3;
+        m_PortalFrameCounter = 5;
 
         // Rotates the velocity of the player
         Vector3 vel = m_Body.velocity;
         vel = Quaternion.AngleAxis(change, Vector3.up) * vel;
         m_Body.velocity = vel;
+
+        // Stores the velocity
+        m_StoredVel = vel;
     }
 }

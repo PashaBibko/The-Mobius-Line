@@ -85,12 +85,20 @@ public partial class PlayerMovement : MonoBehaviour
     //
     int m_PortalFrameCounter = 0;
 
+    //
+    Vector3 m_StoredVel;
+
     // Only instance of the player
     static PlayerMovement s_Instance;
 
     public static Transform Orientation() => s_Instance.m_Orientation;
     public static Vector3 Pos() => s_Instance.transform.position;
-    public static void SetPos(Vector3 v) => s_Instance.transform.parent.position = v;
+    public static void SetPos(Vector3 v)
+    {
+        //Debug.Log(v);
+        s_Instance.transform.parent.position = v;
+    }
+
     public static GameObject Object() => s_Instance.gameObject;
     public static bool CanGoThroughPortals() => s_Instance.m_PortalFrameCounter == 0;
     public static PlayerMovement Instance() => s_Instance;
