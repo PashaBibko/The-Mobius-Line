@@ -17,13 +17,13 @@ public class PortalManager : MonoBehaviour
     PortalManager m_OtherManager;
     PortalCamera m_PortalCamera;
 
-    bool m_PlayerOverlapping = false;
-
     // Gets the other end of the portal
     public PortalManager Linked() => m_OtherManager;
 
     // Gets the location of the player relative to the portal
     public Vector3 PlayerOffset() => m_PlayerPoint.localPosition;
+
+    static bool s_TeleportedThisFrame = false;
 
     // Start is called before the first frame update
     void Start()
@@ -49,33 +49,11 @@ public class PortalManager : MonoBehaviour
     {
         // Updates the player position relative to the portal
         m_PlayerPoint.position = CameraController.Instance().transform.position;
+    }
 
-        // Checks if the player is overlapping with the portal
-        if (m_PlayerOverlapping)
-        {
-            // Calculates if the player is going towards the portal
-            Vector3 difference = PlayerMovement.Pos() - transform.position;
-            float dotProduct = Vector3.Dot(m_PortalRenderer.gameObject.transform.up, difference);
-
-            // If this is true the player has crossed the portal
-            if (dotProduct < 0f && PlayerMovement.CanGoThroughPortals())
-            {
-                // Rotates the player
-                float rotDif = -Quaternion.Angle(transform.rotation, m_OtherManager.transform.rotation);
-                rotDif += 180.0f;
-                CameraController.Instance().RotatePlayerDirection(new Vector2(0f, rotDif));
-
-                // Teleports the player
-                Vector3 offset = Quaternion.Euler(0f, rotDif, 0f) * difference;
-                PlayerMovement.SetPos(m_OtherManager.transform.position + offset - new Vector3(0, 1.5f, 0));
-
-                // Tellss the player it went through a portal
-                PlayerMovement.Instance().WentThroughPortal(rotDif);
-
-                // Stops the overlapping as it has ended
-                m_PlayerOverlapping = false;
-            }
-        }
+    void LateUpdate()
+    {
+        s_TeleportedThisFrame = true;
     }
 
     // When something enters the portal
@@ -83,15 +61,24 @@ public class PortalManager : MonoBehaviour
     {
         // Changing the state if it is not the player will causes issues
         if (other.CompareTag(PlayerMovement.Object().tag) == false) { return; }
-        m_PlayerOverlapping = true;
-    }
 
-    // When something exits the portal
-    private void OnTriggerExit(Collider other)
-    {
-        // Changing the state if it is not the player will causes issues
-        if (other.CompareTag(PlayerMovement.Object().tag) == false) { return; }
-        m_PlayerOverlapping = false;
-        
+        // Calculates if the player is going towards the portal
+        Vector3 difference = PlayerMovement.Pos() - transform.position;
+
+        // If this is true the player has crossed the portal
+        if (PlayerMovement.CanGoThroughPortals() && s_TeleportedThisFrame == true)
+        {
+            // Rotates the player
+            float rotDif = -Quaternion.Angle(transform.rotation, m_OtherManager.transform.rotation);
+            rotDif += 180.0f;
+            CameraController.Instance().RotatePlayerDirection(new Vector2(0f, rotDif));
+
+            // Tellss the player it went through a portal
+            PlayerMovement.Instance().WentThroughPortal(rotDif);
+
+            // Teleports the player
+            Vector3 offset = Quaternion.Euler(0f, rotDif, 0f) * difference;
+            PlayerMovement.SetPos(m_OtherManager.transform.position + offset - new Vector3(0, 1.0f, 0));
+        }
     }
 }

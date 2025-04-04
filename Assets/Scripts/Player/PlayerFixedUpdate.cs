@@ -93,8 +93,10 @@ public partial class PlayerMovement : MonoBehaviour
 
     public void WentThroughPortal(float change)
     {
+        Debug.Log("Went thru portal");
+
         // Resets the counter
-        m_PortalFrameCounter = 3;
+        m_PortalFrameCounter = 20;
 
         // Rotates the velocity of the player
         Vector3 vel = m_Body.velocity;
