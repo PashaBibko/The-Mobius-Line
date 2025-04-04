@@ -15,7 +15,6 @@ public partial class PlayerMovement : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] float m_PlayerHeight;
     [SerializeField] LayerMask m_GroundMask;
-    [SerializeField] LayerMask m_SlopeMask;
 
     [Header("Sliding Settings")]
     [SerializeField] float m_SlideRequiredSpeed;
@@ -71,9 +70,8 @@ public partial class PlayerMovement : MonoBehaviour
     bool m_FlippedWallRideDirectionFirstFrame = false;
     Vector3 m_LastWallNormal;
 
-    // Raycast hit objects
-    RaycastHit m_GroundHit;
-    RaycastHit m_SlopeHit;
+    // What the player is standing on
+    RaycastHit m_StandingOn;
 
     //
     BoxCollider m_WallCollider;
@@ -84,9 +82,32 @@ public partial class PlayerMovement : MonoBehaviour
     //
     Vector3 m_WallNormal;
 
+    //
+    int m_PortalFrameCounter = 0;
+
+    // Only instance of the player
+    static PlayerMovement s_Instance;
+
+    public static Transform Orientation() => s_Instance.m_Orientation;
+    public static Vector3 Pos() => s_Instance.transform.position;
+    public static void SetPos(Vector3 v) => s_Instance.transform.parent.position = v;
+    public static GameObject Object() => s_Instance.gameObject;
+    public static bool CanGoThroughPortals() => s_Instance.m_PortalFrameCounter == 0;
+    public static PlayerMovement Instance() => s_Instance;
+
     // Start is called before the first frame update
     private void Start()
     {
+        // Checks there is not more than one player at one time
+        if (s_Instance != null)
+        {
+            Debug.LogError("Multiple players");
+            return;
+        }
+
+        // Sets it to the instance
+        s_Instance = this;
+
         // Stops the rigidbody from rotatating when we don't want it to
         m_Body.freezeRotation = true;
 

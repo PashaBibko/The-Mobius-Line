@@ -31,8 +31,7 @@ public partial class PlayerMovement : MonoBehaviour
         Vector3 point = closest.ClosestPoint(transform.position);
         Vector3 dir = point - transform.position;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, dir.normalized, out hit, (m_WallCheckDistance * 2.0f) + 1.0f, m_GroundMask))
+        if (Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, (m_WallCheckDistance * 2.0f) + 1.0f, m_GroundMask))
         {
             normal = hit.normal;
             return true;
@@ -40,7 +39,6 @@ public partial class PlayerMovement : MonoBehaviour
 
         else
         {
-            Debug.LogError("SOMETHING WENT WRONG");
             normal = Vector3.zero;
             return false;
         }
@@ -75,5 +73,8 @@ public partial class PlayerMovement : MonoBehaviour
 
         // Sets the last wall normal to the current normal for later use
         m_LastWallNormal = m_WallNormal;
+
+        // Checks if the player wants to jump
+        if (m_JumpKeyPressed) { Jump(2.0f, true); }
     }
 }

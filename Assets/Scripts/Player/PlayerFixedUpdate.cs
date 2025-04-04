@@ -4,20 +4,27 @@ public partial class PlayerMovement : MonoBehaviour
 {
     // Function to make the player jump
     // The function checks wether the player is grounded so external checks are not needed
-    private void Jump(bool force = false)
+    private void Jump(float scale = 1.0f, bool force = false)
     {
         // Checks wether the player is grounded
         // Can be overriden by passing true to force a jump
         if (m_Grounded || force)
         {
+            // Removes all downwards velocity
+            Vector3 v = m_Body.velocity;
+            m_Body.velocity = new Vector3(v.x, Mathf.Max(v.y), v.z);
+
             // Applies an upwards force simulating a jump
-            m_Body.AddForce(transform.up * m_JumpForce * m_Body.mass, ForceMode.Impulse);
+            m_Body.AddForce(Vector3.up * m_JumpForce * m_Body.mass * scale, ForceMode.Impulse);
         }
     }
 
     // Fixed Update is called once per physics update
     private void FixedUpdate()
     {
+        // Resets portal state
+        m_PortalFrameCounter = Mathf.Max(0, m_PortalFrameCounter - 1);
+
         // Works out the new state of the player
         UpdatePlayerState();
 
@@ -28,7 +35,7 @@ public partial class PlayerMovement : MonoBehaviour
         if (m_OnSlope)
         {
             // Calculates better move direction for sliding
-            m_MoveDir = Vector3.ProjectOnPlane(m_MoveDir, m_SlopeHit.normal).normalized;
+            m_MoveDir = Vector3.ProjectOnPlane(m_MoveDir, m_StandingOn.normal).normalized;
         }
 
         // Runs correct update function depending on player state
@@ -36,7 +43,7 @@ public partial class PlayerMovement : MonoBehaviour
         {
             case PlayerState.RUNNING:
                 // Adds the force to the rigid body
-                m_Body.AddForce(m_MoveDir.normalized * m_MoveSpeed * m_Body.mass * 10.0f, ForceMode.Force);
+                m_Body.AddForce(m_MoveDir.normalized * m_MoveSpeed * m_Body.mass * (m_Grounded ? 10.0f : 5.0f), ForceMode.Force);
 
                 // Stops player sliding slopes when they don't want to
                 if (m_OnSlope)
@@ -45,6 +52,10 @@ public partial class PlayerMovement : MonoBehaviour
                 // Non-Slope running requires gravity on
                 else
                 { m_Body.useGravity = true; }
+
+                // Checks if the player wants to jump
+                // Jump function does the checking if they can
+                if (m_JumpKeyPressed) { Jump(); }
 
                 break;
 
@@ -62,13 +73,6 @@ public partial class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        // Calls the Jump function if the user has pressed jump
-        // No grounded checks needed as Jump() function does that internally
-        if (m_JumpKeyPressed)
-        {
-            Jump();
-        }
-
         // Updates the counter for slide boost updates left
         m_TicksOfSlideBoostLeft = (int)Mathf.Clamp(m_TicksOfSlideBoostLeft - 1, 0, Mathf.Infinity);
 
@@ -80,10 +84,23 @@ public partial class PlayerMovement : MonoBehaviour
         m_Body.velocity = v;
 
         // Doubles gravity if falling to feel less floaty
-        if (v.y < 0.0f) { GravityController.Instance().SetScale(2.0f); }
-        else { GravityController.Instance().SetScale(1.0f); }
+        if (v.y < 0.0f) { GravityController.Instance().SetScale(2f); }
+        else { GravityController.Instance().SetScale(1f); }
 
         // Clears all stored collisions
         m_WallCollisions.Clear();
+    }
+
+    public void WentThroughPortal(float change)
+    {
+        Debug.Log("Went thru portal");
+
+        // Resets the counter
+        m_PortalFrameCounter = 20;
+
+        // Rotates the velocity of the player
+        Vector3 vel = m_Body.velocity;
+        vel = Quaternion.AngleAxis(change, Vector3.up) * vel;
+        m_Body.velocity = vel;
     }
 }

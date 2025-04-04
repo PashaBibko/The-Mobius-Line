@@ -9,7 +9,7 @@ public partial class PlayerMovement : MonoBehaviour
         m_PlayerTransform.localScale = new Vector3(1.0f, m_SlideScaler, 1.0f);
 
         // Applies a downward force as shrinking the player scale causes them to float
-        m_Body.AddForce(Vector3.down * m_Body.mass * 5.0f, ForceMode.Impulse);
+        m_Body.AddForce(Vector3.down * m_Body.mass * 5.0f, ForceMode.Force);
 
         // Applies a boost of a force at the beginning of a slide
         m_TicksOfSlideBoostLeft = 10;
@@ -31,17 +31,28 @@ public partial class PlayerMovement : MonoBehaviour
         // Correctly applies force on slopes
         if (m_OnSlope)
         {
-            Vector3 slopeDir = m_SlopeHit.normal;
+            Vector3 slopeDir = m_StandingOn.normal;
             slopeDir.y = 0.0f - slopeDir.y;
             m_Body.AddForce(slopeDir.normalized * m_SlideSpeed * m_Body.mass * 10, ForceMode.Force);
+
+            // Checks if the player wants to jump
+            if (m_JumpKeyPressed) { Jump(2.0f, true); }
         }
 
         // If at the start of a slide provides a boost to the player or if the player is on a slope
         else if (m_TicksOfSlideBoostLeft != 0)
         {
-            m_Body.AddForce(m_MoveDir.normalized * m_SlideSpeed * m_Body.mass * 10, ForceMode.Force);
+            // Applies the boost
+            m_Body.AddForce(m_MoveDir.normalized * m_SlideSpeed * m_Body.mass * 2, ForceMode.Force);
+
+            // Checks if the player wants to jump
+            if (m_JumpKeyPressed) { Jump(1.0f, true); }
         }
 
-        //m_Body.AddForce(Vector3.down * m_Body.mass * 5.0f, ForceMode.Impulse);
+        else
+        {
+            // Checks if the player wants to jump
+            if (m_JumpKeyPressed) { Jump(1.0f, true); }
+        }
     }
 }
