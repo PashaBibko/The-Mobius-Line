@@ -67,7 +67,7 @@ public class PortalManager : MonoBehaviour
 
                 // Teleports the player
                 Vector3 offset = Quaternion.Euler(0f, rotDif, 0f) * difference;
-                PlayerMovement.SetPos(m_OtherManager.transform.position + PlayerOffset() - new Vector3(0, 2, 0));
+                PlayerMovement.SetPos(m_OtherManager.transform.position + offset - new Vector3(0, 1.5f, 0));
 
                 // Tellss the player it went through a portal
                 PlayerMovement.Instance().WentThroughPortal(rotDif);
