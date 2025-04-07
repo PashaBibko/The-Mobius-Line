@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PortalManager : MonoBehaviour
@@ -23,7 +24,7 @@ public class PortalManager : MonoBehaviour
     // Gets the location of the player relative to the portal
     public Vector3 PlayerOffset() => m_PlayerPoint.localPosition;
 
-    static bool s_TeleportedThisFrame = false;
+    static bool s_TeleportAllowed = true;
 
     // Start is called before the first frame update
     void Start()
@@ -51,13 +52,18 @@ public class PortalManager : MonoBehaviour
         m_PlayerPoint.position = CameraController.Instance().transform.position;
     }
 
-    void LateUpdate()
+    IEnumerator PortalDelay()
     {
-        s_TeleportedThisFrame = true;
+        s_TeleportAllowed = false;
+        yield return new WaitForSecondsRealtime(0.5f);
+        s_TeleportAllowed = true;
     }
 
     // When something enters the portal
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) => AttemptToTeleportPlayer(other);
+    //private void OnTriggerStay(Collider other) => AttemptToTeleportPlayer(other);
+
+    private void AttemptToTeleportPlayer(Collider other)
     {
         // Changing the state if it is not the player will causes issues
         if (other.CompareTag(PlayerMovement.Object().tag) == false) { return; }
@@ -66,8 +72,11 @@ public class PortalManager : MonoBehaviour
         Vector3 difference = PlayerMovement.Pos() - transform.position;
 
         // If this is true the player has crossed the portal
-        if (PlayerMovement.CanGoThroughPortals() && s_TeleportedThisFrame == true)
+        if (s_TeleportAllowed == true)
         {
+            //
+            StartCoroutine(PortalDelay());
+
             // Rotates the player
             float rotDif = -Quaternion.Angle(transform.rotation, m_OtherManager.transform.rotation);
             rotDif += 180.0f;
