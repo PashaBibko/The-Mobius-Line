@@ -4,6 +4,7 @@ public class PortalManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject m_OtherPortal;
+    [SerializeField] float m_AngleDif;
 
     [Header("Set References")]
     [SerializeField] GameObject m_CameraPrefab;
@@ -69,8 +70,7 @@ public class PortalManager : MonoBehaviour
         if (PlayerMovement.CanGoThroughPortals() && s_TeleportedThisFrame == true)
         {
             // Rotates the player
-            float rotDif = -Quaternion.Angle(transform.rotation, m_OtherManager.transform.rotation);
-            rotDif += 180.0f;
+            float rotDif = -Quaternion.Angle(transform.rotation, m_OtherManager.transform.rotation) + m_AngleDif;
             CameraController.Instance().RotatePlayerDirection(new Vector2(0f, rotDif));
 
             // Tellss the player it went through a portal
