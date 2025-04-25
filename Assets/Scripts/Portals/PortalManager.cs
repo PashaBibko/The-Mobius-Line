@@ -5,6 +5,7 @@ public class PortalManager : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject m_OtherPortal;
     [SerializeField] float m_AngleDif;
+    [SerializeField] float m_CamDif;
 
     [Header("Set References")]
     [SerializeField] GameObject m_CameraPrefab;
@@ -23,6 +24,8 @@ public class PortalManager : MonoBehaviour
 
     // Gets the location of the player relative to the portal
     public Vector3 PlayerOffset() => m_PlayerPoint.localPosition;
+
+    public float CamDif() => m_CamDif;
 
     static bool s_TeleportedThisFrame = false;
 

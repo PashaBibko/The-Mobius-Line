@@ -59,6 +59,9 @@ public class PortalCamera : MonoBehaviour
         float angle = Quaternion.Angle(m_DisplayPortal.transform.parent.rotation, m_CapturePortal.transform.parent.rotation);
         Quaternion rotDif = Quaternion.AngleAxis(angle, Vector3.up);
         Vector3 newCamDir = rotDif * CameraController.Instance().transform.forward;
-        transform.parent.eulerAngles = Quaternion.LookRotation(newCamDir, Vector3.up).eulerAngles + m_Rot;
+        //Vector3 d = new(m_CapturePortal.CamDif(), 0f, 0f);
+        //Vector3 d = new(0f, 0f, m_CapturePortal.CamDif());
+        Vector3 d = new(0f, m_CapturePortal.CamDif(), 0f);
+        transform.parent.eulerAngles = Quaternion.LookRotation(newCamDir, Vector3.up).eulerAngles + m_Rot + d;
     }
 }

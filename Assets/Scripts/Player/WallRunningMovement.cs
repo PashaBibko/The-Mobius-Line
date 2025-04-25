@@ -8,8 +8,14 @@ public partial class PlayerMovement : MonoBehaviour
         Collider closest = null;
 
         foreach (Collider collision in m_WallCollisions)
-        { 
-            Vector3 pos = collision.ClosestPoint(transform.position);
+        {
+            Vector3 pos = Vector3.zero;
+
+            if (collision.GetType() != typeof(MeshCollider))
+            {
+                pos = collision.ClosestPoint(transform.position);
+            }
+
             Vector3 dif = transform.position - pos;
 
             float distance = dif.magnitude;

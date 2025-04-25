@@ -6163,6 +6163,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4470023418895194988, guid: c41b43046138ded45bddaab8e10d4cf0, type: 3}
+      propertyPath: m_AngleDif
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 4470023418895194988, guid: c41b43046138ded45bddaab8e10d4cf0, type: 3}
       propertyPath: m_PlayerTag
       value: Player
       objectReference: {fileID: 0}
@@ -12074,6 +12078,10 @@ PrefabInstance:
     - target: {fileID: 4470023418895194988, guid: c41b43046138ded45bddaab8e10d4cf0, type: 3}
       propertyPath: m_PortalB
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4470023418895194988, guid: c41b43046138ded45bddaab8e10d4cf0, type: 3}
+      propertyPath: m_AngleDif
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 4470023418895194988, guid: c41b43046138ded45bddaab8e10d4cf0, type: 3}
       propertyPath: m_PlayerTag
