@@ -7,10 +7,10 @@ public partial class PlayerMovement : MonoBehaviour
     private void UpdateInput()
     {
         // Calls get axis raw to ignore any uneeded scaling
-        //m_Input.x = Input.GetAxisRaw("Horizontal");
+        m_Input.x = Input.GetAxisRaw("Horizontal");
         m_Input.y = Input.GetAxisRaw("Vertical");
 
-        m_Input.y = Mathf.Clamp(m_Input.y, 0, Mathf.Infinity);
+        //m_Input.y = Mathf.Clamp(m_Input.y, 0, Mathf.Infinity);
 
         // Updates key press states
         m_JumpKeyPressed = Input.GetKey(m_JumpKey);

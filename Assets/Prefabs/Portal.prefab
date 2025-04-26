@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_OtherPortal: {fileID: 0}
+  m_AngleDif: 0
+  m_CamDif: 0
   m_CameraPrefab: {fileID: 1179287573507601862, guid: 1a28b9e152b1d3d419d1881ea498fcbf, type: 3}
   m_PortalRenderer: {fileID: 4162196787169641245}
   m_PlayerPoint: {fileID: 6158405577604730568}
