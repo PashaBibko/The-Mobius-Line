@@ -23,8 +23,8 @@ public partial class PlayerMovement : MonoBehaviour
             { m_State = PlayerState.SLIDING; }
 
         // Checks if the player is in the wall running state
-        // else if (GetNormalOfClosestCollider(out m_WallNormal) && m_WallRunKeyPressed)
-            // { m_State = PlayerState.WALL_RUNNING; }
+        else if (GetNormalOfClosestCollider(out m_WallNormal) && m_WallRunKeyPressed)
+            { m_State = PlayerState.WALL_RUNNING; }
 
         // Defaults to ruuning
         else { m_State = PlayerState.RUNNING; }

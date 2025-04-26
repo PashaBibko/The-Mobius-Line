@@ -9,16 +9,16 @@ public partial class PlayerMovement : MonoBehaviour
 
         foreach (Collider collision in m_WallCollisions)
         {
-            Vector3 pos = Vector3.zero;
+            float distance = Mathf.Infinity;
 
             if (collision.GetType() != typeof(MeshCollider))
             {
-                pos = collision.ClosestPoint(transform.position);
+                Vector3 pos = collision.ClosestPoint(transform.position);
+
+                Vector3 dif = transform.position - pos;
+
+                distance = dif.magnitude;
             }
-
-            Vector3 dif = transform.position - pos;
-
-            float distance = dif.magnitude;
 
             dist = Mathf.Min(dist, distance);
 
