@@ -45,6 +45,17 @@ public partial class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        // Reloads the game to stop falling off
+        if (Input.GetKey(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        if (m_IsDead)
+        {
+            return;
+        }
+
         // Performs raycasts to see what the player is standing on
         m_Grounded = Physics.Raycast(transform.position, Vector3.down, out m_StandingOn, m_PlayerHeight * 0.5f + 0.3f, m_GroundMask);
         m_OnSlope = m_StandingOn.normal != new Vector3(0.0f, 1.0f, 0.0f) && m_Grounded;
@@ -60,11 +71,5 @@ public partial class PlayerMovement : MonoBehaviour
 
         // Displays the speed of the player to the screen
         m_SpeedDisplay.text = new Vector3(m_Body.velocity.x, 0.0f, m_Body.velocity.z).magnitude.ToString("0.00") + " m/s";
-
-        // Reloads the game to stop falling off
-        if (Input.GetKey(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
     }
 }

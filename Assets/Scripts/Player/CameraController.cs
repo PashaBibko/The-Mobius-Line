@@ -49,6 +49,12 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PlayerMovement.Instance().IsDead())
+        {
+            transform.position = m_Tracking.position;
+            return;
+        }
+
         // Gets the mouse input from the user
         Vector2 mouse = new Vector2
         (

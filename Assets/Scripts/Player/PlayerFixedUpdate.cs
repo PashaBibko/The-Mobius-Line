@@ -22,6 +22,11 @@ public partial class PlayerMovement : MonoBehaviour
     // Fixed Update is called once per physics update
     private void FixedUpdate()
     {
+        if (m_IsDead)
+        {
+            return;
+        }
+
         // Resets portal state
         m_PortalFrameCounter = Mathf.Max(0, m_PortalFrameCounter - 1);
 

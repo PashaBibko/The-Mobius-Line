@@ -41,6 +41,12 @@ public partial class PlayerMovement : MonoBehaviour
     [SerializeField] Transform m_Orientation;
     [SerializeField] Transform m_PlayerTransform;
 
+    [Header("Canvases")]
+    [SerializeField] Canvas m_GameCanvas;
+    [SerializeField] Canvas m_DeadCanvas;
+    [SerializeField] Canvas m_CompletedCanvas;
+    [SerializeField] Text m_CompletedText;
+
     [Header("Debug Settings")]
     [SerializeField] Text m_SpeedDisplay;
 
@@ -85,6 +91,10 @@ public partial class PlayerMovement : MonoBehaviour
     //
     int m_PortalFrameCounter = 0;
 
+    bool m_IsDead = false;
+
+    float m_StartTime;
+
     // Only instance of the player
     static PlayerMovement s_Instance;
 
@@ -98,6 +108,12 @@ public partial class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        m_StartTime = Time.time;
+
+        //
+        m_CompletedCanvas.enabled = false;
+        m_DeadCanvas.enabled = false;
+
         // Checks there is not more than one player at one time
         if (s_Instance != null)
         {
@@ -121,4 +137,19 @@ public partial class PlayerMovement : MonoBehaviour
         // Allocates memory for the list of collisions
         m_WallCollisions = new List<Collider>();
     }
+
+    public void Kill()
+    {
+        if (m_IsDead)
+        {
+            return;
+        }
+
+        m_IsDead = true;
+
+        m_GameCanvas.enabled = false;
+        m_DeadCanvas.enabled = true;
+    }
+
+    public bool IsDead() { return m_IsDead; }
 }
