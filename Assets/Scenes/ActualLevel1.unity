@@ -608,6 +608,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1632877289128239282, guid: 403eb740238e6b64690125507aa8e849, type: 3}
   m_PrefabInstance: {fileID: 1957750500}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &259691000 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4448638729554205736, guid: 04e3e796397021e4a8006d7d49ba6083, type: 3}
+  m_PrefabInstance: {fileID: 1080427054}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &314221797
 GameObject:
   m_ObjectHideFlags: 0
@@ -25499,6 +25510,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8262238277154956783, guid: 403eb740238e6b64690125507aa8e849, type: 3}
+      propertyPath: m_TimeText
+      value: 
+      objectReference: {fileID: 259691000}
     - target: {fileID: 8262238277154956783, guid: 403eb740238e6b64690125507aa8e849, type: 3}
       propertyPath: m_DeadCanvas
       value: 

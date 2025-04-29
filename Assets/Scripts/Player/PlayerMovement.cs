@@ -46,6 +46,7 @@ public partial class PlayerMovement : MonoBehaviour
     [SerializeField] Canvas m_DeadCanvas;
     [SerializeField] Canvas m_CompletedCanvas;
     [SerializeField] Text m_CompletedText;
+    [SerializeField] Text m_TimeText;
 
     [Header("Debug Settings")]
     [SerializeField] Text m_SpeedDisplay;
@@ -93,7 +94,7 @@ public partial class PlayerMovement : MonoBehaviour
 
     bool m_IsDead = false;
 
-    float m_StartTime;
+    float m_StartTime = 0.0f;
 
     // Only instance of the player
     static PlayerMovement s_Instance;
@@ -108,8 +109,6 @@ public partial class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        m_StartTime = Time.time;
-
         //
         m_CompletedCanvas.enabled = false;
         m_DeadCanvas.enabled = false;

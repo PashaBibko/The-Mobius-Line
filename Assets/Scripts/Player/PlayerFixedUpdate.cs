@@ -36,6 +36,16 @@ public partial class PlayerMovement : MonoBehaviour
         // Calculates the movement direction
         m_MoveDir = (m_Orientation.forward * m_Input.y) + (m_Orientation.right * m_Input.x);
 
+        if (m_MoveDir != Vector3.zero && m_StartTime == 0.0f)
+        {
+            m_StartTime = Time.time;
+        }
+
+        if (m_StartTime != 0.0f)
+        {
+            m_TimeText.text = (Time.time - m_StartTime).ToString("0.00") + " s";
+        }
+
         //
         if (m_OnSlope)
         {
