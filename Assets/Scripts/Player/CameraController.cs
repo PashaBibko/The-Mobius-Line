@@ -40,10 +40,6 @@ public class CameraController : MonoBehaviour
         {
             Debug.LogError("Multiple instances of CameraController within Scene");
         }
-
-        // Locks the cursor and makes it invisible
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     // Update is called once per frame

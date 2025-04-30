@@ -27,6 +27,9 @@ public class MainMenu : MonoBehaviour
 
         m_ControlsCanvas.enabled = false;
         m_OptionsCanvas.enabled = false;
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void StartGame() => SceneManager.LoadScene(1);
@@ -55,7 +58,7 @@ public class MainMenu : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKey(KeyCode.Tab))
         {
             StartMenu();
         }
