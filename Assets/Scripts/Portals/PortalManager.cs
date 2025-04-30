@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PortalManager : MonoBehaviour
@@ -27,8 +28,6 @@ public class PortalManager : MonoBehaviour
 
     public float CamDif() => m_CamDif;
 
-    static bool s_TeleportedThisFrame = false;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -48,16 +47,9 @@ public class PortalManager : MonoBehaviour
         m_PortalCamera.InitCamera(m_Renderers, this, transform.parent.localEulerAngles * 2.0f);
     }
 
-    // Updates is called every frame
-    void Update()
-    {
-        // Updates the player position relative to the portal
-        m_PlayerPoint.position = CameraController.Instance().transform.position;
-    }
-
     void LateUpdate()
     {
-        s_TeleportedThisFrame = true;
+        m_PlayerPoint.position = CameraController.Instance().transform.position;
     }
 
     // When something enters the portal
@@ -70,7 +62,7 @@ public class PortalManager : MonoBehaviour
         Vector3 difference = PlayerMovement.Pos() - transform.position;
 
         // If this is true the player has crossed the portal
-        if (PlayerMovement.CanGoThroughPortals() && s_TeleportedThisFrame == true)
+        if (PlayerMovement.CanGoThroughPortals())
         {
             // Rotates the player
             float rotDif = -Quaternion.Angle(transform.rotation, m_OtherManager.transform.rotation) + m_AngleDif;
