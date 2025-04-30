@@ -19,7 +19,7 @@ public class PortalCamera : MonoBehaviour
     Vector3 m_Rot;
 
     // Initialistion function for the camera
-    public void InitCamera(MeshRenderer renderer, PortalManager creator, Vector3 rot)
+    public void InitCamera(MeshRenderer[] renderers, PortalManager creator, Vector3 rot)
     {
         // Transfers the passed rotation to be stored within the class
         m_Rot = rot;
@@ -42,7 +42,11 @@ public class PortalCamera : MonoBehaviour
         // Links the camera to the mesh renderer
         m_Camera.targetTexture = m_RenderTexture; // Sets it's camera to display to the render texture instead of the screen
         m_RenderMaterial.mainTexture = m_RenderTexture; // Sets the material to use the render texture as it's texture
-        renderer.material = m_RenderMaterial; // Set's the renderer to use the material
+
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material = m_RenderMaterial;
+        }
     }
 
     // Update is called every frame

@@ -9,7 +9,7 @@ public class PortalManager : MonoBehaviour
 
     [Header("Set References")]
     [SerializeField] GameObject m_CameraPrefab;
-    [SerializeField] MeshRenderer m_PortalRenderer;
+    [SerializeField] MeshRenderer[] m_Renderers;
 
     [Header("Points")]
     [SerializeField] Transform m_PlayerPoint;
@@ -45,7 +45,7 @@ public class PortalManager : MonoBehaviour
         m_PortalCamera = cam.GetComponentInChildren<PortalCamera>();
 
         // Initialises the camera so it renders to the portal and not the screen
-        m_PortalCamera.InitCamera(m_PortalRenderer, this, transform.parent.localEulerAngles * 2.0f);
+        m_PortalCamera.InitCamera(m_Renderers, this, transform.parent.localEulerAngles * 2.0f);
     }
 
     // Updates is called every frame
