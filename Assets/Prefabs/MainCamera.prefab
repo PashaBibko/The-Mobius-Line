@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cfd42fc2ed2f504dae2b9e7095401cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Sensitivity: {x: 1200, y: 800}
+  m_Sensitivity: {x: 12, y: 8}
   m_MaxAngle: 85
   m_Orientation: {fileID: 0}
   m_Tracking: {fileID: 0}

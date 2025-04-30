@@ -58,8 +58,8 @@ public class CameraController : MonoBehaviour
         // Gets the mouse input from the user
         Vector2 mouse = new Vector2
         (
-            Input.GetAxisRaw("Mouse X") * Time.deltaTime * m_Sensitivity.x,
-            Input.GetAxisRaw("Mouse Y") * Time.deltaTime * m_Sensitivity.y
+            Input.GetAxisRaw("Mouse X") * Time.deltaTime * m_Sensitivity.x * MainMenu.sens,
+            Input.GetAxisRaw("Mouse Y") * Time.deltaTime * m_Sensitivity.y * MainMenu.sens
         );
 
         // Applies the mouse movement to the camera angle
