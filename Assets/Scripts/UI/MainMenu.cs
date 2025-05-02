@@ -18,8 +18,11 @@ public class MainMenu : MonoBehaviour
     [Header("Options References")]
     [SerializeField] Text m_SensText;
     [SerializeField] Slider m_SensitivitySlider;
+    [SerializeField] Text m_FOVText;
+    [SerializeField] Slider m_FOVSlider;
 
-    public static float sens = 100.0f;
+    public static float sens = 35;
+    public static float fov = 90;
 
     private void Start()
     {
@@ -30,6 +33,9 @@ public class MainMenu : MonoBehaviour
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
+
+        m_FOVSlider.value = fov;
+        m_SensitivitySlider.value = sens;
     }
 
     public void StartGame() => SceneManager.LoadScene(1);
@@ -65,5 +71,8 @@ public class MainMenu : MonoBehaviour
 
         sens = m_SensitivitySlider.value;
         m_SensText.text = sens.ToString();
+
+        fov = m_FOVSlider.value;
+        m_FOVText.text = fov.ToString();
     }
 }

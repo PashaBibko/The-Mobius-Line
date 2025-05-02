@@ -30,6 +30,7 @@ public class PortalCamera : MonoBehaviour
 
         // Gets the camera from the component
         m_Camera = gameObject.GetComponent<Camera>();
+        m_Camera.fieldOfView = MainMenu.fov;
 
         // Creates the render texture
         RenderTextureDescriptor descriptor = new(Screen.width, Screen.height);

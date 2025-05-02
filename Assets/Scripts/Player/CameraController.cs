@@ -28,6 +28,8 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameObject.GetComponent<Camera>().fieldOfView = MainMenu.fov;
+
         // Checks it is the only instance
         if (s_Instance == null)
         {
