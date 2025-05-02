@@ -4500,7 +4500,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Note:
 
-    Only works on red walls'
+    Only works on BLUE walls'
 --- !u!222 &1529889363
 CanvasRenderer:
   m_ObjectHideFlags: 0

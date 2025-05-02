@@ -18,7 +18,7 @@ public class PortalManager : MonoBehaviour
     // Private variables //
 
     PortalManager m_OtherManager;
-    PortalCamera m_PortalCamera;
+    [SerializeField] PortalCamera m_PortalCamera;
 
     // Gets the other end of the portal
     public PortalManager Linked() => m_OtherManager;
@@ -50,6 +50,23 @@ public class PortalManager : MonoBehaviour
     void LateUpdate()
     {
         m_PlayerPoint.position = CameraController.Instance().transform.position;
+    }
+
+    public void ForceTeleport()
+    {
+        // Calculates if the player is going towards the portal
+        Vector3 difference = PlayerMovement.Pos() - transform.position;
+
+        // Rotates the player
+        float rotDif = -Quaternion.Angle(transform.rotation, m_OtherManager.transform.rotation) + m_AngleDif;
+        CameraController.Instance().RotatePlayerDirection(new Vector2(0f, rotDif));
+
+        // Tellss the player it went through a portal
+        PlayerMovement.Instance().WentThroughPortal(rotDif);
+
+        // Teleports the player
+        Vector3 offset = Quaternion.Euler(0f, rotDif, 0f) * difference;
+        PlayerMovement.SetPos(m_OtherManager.transform.position + offset - new Vector3(0, 1.0f, 0));
     }
 
     // When something enters the portal

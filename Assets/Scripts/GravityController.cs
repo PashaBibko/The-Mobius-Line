@@ -8,6 +8,10 @@ public class GravityController
     // Constant gravity scale
     const float m_GravityScale = -20.0f;
 
+    Vector3 m_Up = Vector3.zero;
+
+    public static Vector3 up => s_Instance.m_Up;
+
     // Private constructor to stop accidental creation
     private GravityController() { }
 
@@ -27,5 +31,6 @@ public class GravityController
     {
         // Sets the gravity
         Physics.gravity = new Vector3(0, m_GravityScale * scale, 0);
+        m_Up = Physics.gravity;
     }
 }
