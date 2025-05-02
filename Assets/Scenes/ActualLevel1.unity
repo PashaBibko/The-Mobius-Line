@@ -25049,6 +25049,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 259691000}
     - target: {fileID: 8262238277154956783, guid: 403eb740238e6b64690125507aa8e849, type: 3}
+      propertyPath: m_JumpForce
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8262238277154956783, guid: 403eb740238e6b64690125507aa8e849, type: 3}
       propertyPath: m_DeadCanvas
       value: 
       objectReference: {fileID: 1161024501}
