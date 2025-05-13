@@ -1,4 +1,4 @@
-![](md-res/media%20(4).png)
+<img src="md-res/media (4).png" alt="" style="max-width: 100%; height: auto;">
 
 # The Mobius Line
 
