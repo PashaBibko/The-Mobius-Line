@@ -1,4 +1,8 @@
-<img src="md-res/media (4).png" alt="" style="max-width: 100%; height: auto;">
+<div align="centre">
+
+<img src="md-res/media (3).png" alt="" style="width=1200">
+
+</div>
 
 # The Mobius Line
 
