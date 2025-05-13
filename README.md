@@ -1,6 +1,6 @@
 <div align="centre">
 
-<img src="md-res/media (3).png" alt="" style="width=1200">
+<img src="md-res/media (3).png" alt="" style="width=1200"/>
 
 </div>
 
