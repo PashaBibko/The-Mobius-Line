@@ -9,3 +9,5 @@ The mobius line is a speedrunning game built around non-Euclidean concepts set i
 ![](md-res/screenshot1.png)
 ![](md-res/screenshot2.png)
 ![](md-res/screenshot3.png)
+
+If you would like to find out more about the plans for the game you can find the game design document [here](GameDesignDoc.md)
